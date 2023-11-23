@@ -1,0 +1,353 @@
+/* MAP */
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    background-image: url("salted-bg.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#map {
+    position: relative;
+    height: 90vh;
+    width: 85%;
+    left: 0.0%;
+    top: 0.0%;
+    float: right;
+}
+
+/* legend */
+.legend_parcel {
+    background-color: #fafafa;
+    border: 2px solid #0e3f0c;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.legend_parcel ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.legend_parcel ul li {
+    padding: 6px 7px 5px 7px;
+}
+
+.legend_co2 {
+    border: 2px solid #0e3f0c;
+    padding: 5px 5px 0px 5px;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #fafafa;
+    line-height: 0px;
+}
+
+.legend_co2_wrapper {
+    display: flex;
+}
+
+.legend_co2 i {
+    width: 20px;
+    height: 10px;
+    float: left;
+}
+
+#legend_co2_0 {
+    flex: 5;
+}
+
+#legend_co2_text {
+    flex: 6.5;
+}
+
+#legend_co2_1 {
+    flex: 1;
+}
+
+.msg_display {
+    background-color: #fafafa;
+    font-size: 16px;
+    padding: 30px 50px 30px 50px;
+    border: 2px solid #0e3f0c;
+    border-radius: 6px;
+    text-align: center;
+}
+
+/* TOP NAVIGATION BAR */
+#topnav {
+    background-color: #0e3f0c;
+    overflow: hidden;
+    text-align: right;
+    height: 10vh;
+    min-height: 90px;
+}
+
+#topnav a {
+    color: #f2f2f2;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 30px;
+}
+
+#topnav_salted img {
+    width: 100%;
+    max-width: 75px;
+}
+
+#topnav_amper img {
+    width: 100%;
+    max-width: 150px;
+}
+
+#topnav_title {
+    font-family: Arial, Helvetica, sans-serif;
+    float: left;
+    margin-left: 5%;
+}
+
+/* LEFT BUTTON PANEL */
+#button_panel {
+    height: 90vh;
+    float: left;
+}
+
+#button_panel ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 15%;
+    background-color: #195a17;
+    height: 100%; /* Full height */
+    position: fixed; /* Make it stick, even on scroll */
+}
+
+#button_panel li {
+    padding-top: 1.5vh;
+    text-align: center;
+    vertical-align: 50%; /* no funciona? */
+    color: #f2f2f2;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    user-select: none;
+} #button_panel li:after {
+    content: "";
+    display: block;
+    margin: 0 auto;
+    width: 60%;
+    padding-bottom: 1.5vh;
+    border-bottom: 1px solid #f2f2f2;
+} #button_panel li:hover {
+    background-color: #175215;
+    cursor: pointer;
+} #button_panel li.active {
+    background-color: #175215;
+}
+
+/* POPUP WINDOWS */
+.popup {
+    display: none;
+    position: absolute;
+    background-color: #fafafa;
+    border: 2px solid #195a17;
+    border-radius: 6px;
+    margin-left: 20%;
+    margin-top: 2%;
+    width: 50%;
+    height: auto;
+    min-height: 15%;
+    /* height: 80%; */
+    z-index: 1200;
+}
+.popup.active, .popup_map_data.active, .popup_select_parcels.active {
+    display: block;
+}
+
+/* #co2_by_parcel_popup {
+    width: 70%;
+} */
+
+.popup p {
+    margin-top: 5px;
+    margin-left: 5px;
+    top: 0;
+    left: 0;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.close_popups {
+    margin-right: 5px;
+    float: right;
+    background-color: #195a17;
+    border-color: white;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+} .close_popups:hover {
+    background-color: #175215;
+    cursor: pointer;
+}
+
+/* map data + select parcels */
+.popup_map_data, .popup_select_parcels {
+    display: none;
+    margin-left: 15%;
+    margin-top: 0;
+    padding: 0;
+}
+
+.popup_map_data ul, .popup_select_parcels ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: fixed;
+    background-color: #eef5ea;
+    border: 0;
+    border-right-width: 15px;
+    border-radius: 0 0 10px 0;
+    width: 10%;
+    z-index: 1200;
+}
+
+.popup_map_data li, .popup_select_parcels li {
+    padding-top: 1.5vh;
+    padding-bottom: 1.5vh;
+    text-align: center;
+    color: rgb(14, 65, 18);
+    border: 3px solid #eef5ea;
+    border-right-width: 15px;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    user-select: none;
+} .popup_map_data li:hover, .popup_select_parcels li:hover {
+    cursor: pointer;
+    border: 3px solid #e4eedd;
+    border-right-width: 15px;
+    background-color: #e4eedd;
+}
+
+#map_data_show_co2.active {
+    border: 3px solid #cccccc;
+    border-right-width: 15px;
+}
+
+#map_data_show_parcels {
+    border-radius: 0 0 10px 0;
+} #map_data_show_parcels.active {
+    border: 3px solid #a7c096;
+    border-right-width: 15px;
+}
+
+#parcel_button_water.active {
+    border: 3px solid #00cdf1;
+    border-right-width: 15px;
+}
+
+#parcel_button_greenhouse.active {
+    border: 3px solid #3185FC;
+    border-right-width: 15px;
+}
+
+#parcel_button_citrus.active {
+    border: 3px solid #FFBA08;
+    border-right-width: 15px;
+}
+
+#parcel_button_olive.active {
+    border: 3px solid #33a63a;
+    border-right-width: 15px;
+}
+
+#parcel_button_pasture.active {
+    border: 3px solid #8FE388;
+    border-right-width: 15px;
+}
+
+#parcel_button_forest.active {
+    border: 3px solid #00844b;
+    border-right-width: 15px;
+}
+
+#parcel_button_fruit.active {
+    border: 3px solid #D00000;
+    border-right-width: 15px;
+}
+
+#parcel_button_vineyard.active {
+    border: 3px solid #5D2E8C;
+    border-right-width: 15px;
+}
+
+#parcel_button_nuts.active {
+    border: 3px solid #9f7a35;
+    border-right-width: 15px;
+}
+
+#parcel_button_soil.active {
+    border: 3px solid #684A00;
+    border-right-width: 15px;
+}
+
+#parcel_button_buildings.active {
+    border: 3px solid #a13325;
+    border-right-width: 15px;
+}
+
+#parcel_button_road.active {
+    border: 3px solid #545355;
+    border-right-width: 15px;
+}
+
+#parcel_button_fallow {
+    border-radius: 0 0 10px 0;
+} #parcel_button_fallow.active {
+    border: 3px solid #242222;
+    border-right-width: 15px;
+}
+
+/* graphs */
+
+#parcel_distribution_chart {
+    float: right;
+    width: 95%;
+}
+
+#co2_distribution_chart {
+    width: 100%;
+}
+
+#co2_distribution_complete_chart {
+    width: 100%;
+}
+
+#co2_distribution_tooltip {
+    margin: 0;
+    padding: 0;
+    border: 2px solid #0e3f0c;
+    border-radius: 4px;
+}
+
+#co2_distribution_tooltip p {
+    font-size: 17px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #0e3f0c;
+    color: white;
+    text-align: center;
+    padding: 3px 8px 3px 2px;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+
+#button_panel ul {
+    list-style-type: none;
+    margin-right: 5px;
+}
+
+#co2_distribution_tooltip ul li {
+    list-style-type: none;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-right: 30px;
+}
