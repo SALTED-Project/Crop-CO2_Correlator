@@ -267,10 +267,11 @@ export default {
     let offset = 0;
     let count = 0;
     do {
-      var co2_response = await fetch(process.env.VUE_APP_SCORPIO_ENDPOINT + "ngsi-ld/v1/entities?type=AirQualityObserved&offset="+offset.toString()+"&limit=1000&options=keyValues&attrs=location,co2&count=true", {
-        headers: {"Link": '<https://raw.githubusercontent.com/SALTED-Project/contexts/main/wrapped_contexts/environment-context.jsonld>;rel="http://www.w3.org/ns/json-ld#context";type="application/ld+json"'},
-      });
-      count = parseInt(co2_response.headers.get('count'));
+      // var co2_response = await fetch(process.env.VUE_APP_SCORPIO_ENDPOINT + "ngsi-ld/v1/entities?type=AirQualityObserved&offset="+offset.toString()+"&limit=1000&options=keyValues&attrs=location,co2&count=true", {
+      //   headers: {"Link": '<https://raw.githubusercontent.com/SALTED-Project/contexts/main/wrapped_contexts/environment-context.jsonld>;rel="http://www.w3.org/ns/json-ld#context";type="application/ld+json"'},
+      // });
+      var co2_response = await fetch(process.env.VUE_APP_SCORPIO_ENDPOINT + "ngsi-ld/v1/entities?type=https%3A%2F%2Fsmartdatamodels.org%2FdataModel.Environment%2FAirQualityObserved&offset="+offset.toString()+"&limit=1000&options=keyValues&attrs=https%3A%2F%2Fsmartdatamodels.org%2FdataModel.Environment%2Fco2,location&count=true");
+      count = parseInt(co2_response.headers.get('NGSILD-Results-Count'));
       //count = Math.min(parseInt(co2_response.headers.get('count')), 6000);
       offset += 1000;
       var co2_json_data_partial = await co2_response.json();
@@ -286,10 +287,11 @@ export default {
     // request parcel data
     offset = 0;
     do {
-      var parcel_response = await fetch(process.env.VUE_APP_SCORPIO_ENDPOINT + "ngsi-ld/v1/entities?type=AgriParcel&offset="+offset.toString()+"&limit=1000&options=keyValues&attrs=category,location,hasAirQualityObserved&count=true", {
-        headers: {"Link": '<https://raw.githubusercontent.com/SALTED-Project/contexts/main/wrapped_contexts/agrifood-context.jsonld>;rel="http://www.w3.org/ns/json-ld#context";type="application/ld+json"'},
-      });
-      count = parseInt(parcel_response.headers.get('count'));
+      // var parcel_response = await fetch(process.env.VUE_APP_SCORPIO_ENDPOINT + "ngsi-ld/v1/entities?type=AgriParcel&offset="+offset.toString()+"&limit=1000&options=keyValues&attrs=category,location,hasAirQualityObserved&count=true", {
+      //   headers: {"Link": '<https://raw.githubusercontent.com/SALTED-Project/contexts/main/wrapped_contexts/agrifood-context.jsonld>;rel="http://www.w3.org/ns/json-ld#context";type="application/ld+json"'},
+      // });
+      var parcel_response = await fetch(process.env.VUE_APP_SCORPIO_ENDPOINT + "ngsi-ld/v1/entities?type=https%3A%2F%2Fsmartdatamodels.org%2FdataModel.Agrifood%2FAgriParcel&offset="+offset.toString()+"&limit=1000&options=keyValues&attrs=https%3A%2F%2Fsmartdatamodels.org%2FdataModel.Agrifood%2Fcategory,location,https%3A%2F%2Fsmartdatamodels.org%2FdataModel.Agrifood%2FhasAirQualityObserved&count=true");
+      count = parseInt(parcel_response.headers.get('NGSILD-Results-Count'));
       offset += 1000;
       var parcel_json_data_partial = await parcel_response.json();
       parcel_json_data.push(...parcel_json_data_partial);
@@ -318,17 +320,17 @@ export default {
       co2_geojson_data["features"].push({
         "type": "Feature",
         "geometry": feature["location"],
-        "properties": { "co2": feature["co2"] }
+        "properties": { "co2": feature["https://smartdatamodels.org/dataModel.Environment/co2"] }
       });
-      co2_values.set(feature["id"],feature["co2"]);
+      co2_values.set(feature["id"],feature["https://smartdatamodels.org/dataModel.Environment/co2"]);
     });
 
     // map parcel data to geojson
     this.parcel_co2_list = Array.from( new Array(this.$parcel_types.length), function() { return []; } );
     parcel_json_data.forEach(feature => {
-      let category = feature["category"].slice(0,2);
+      let category = feature["https://smartdatamodels.org/dataModel.Agrifood/category"].slice(0,2);
       let index = this.$parcel_types.indexOf(category);
-      let related_airq = feature["hasAirQualityObserved"];
+      let related_airq = feature["https://smartdatamodels.org/dataModel.Agrifood/hasAirQualityObserved"];
       if(!Array.isArray(related_airq)) {
         related_airq = [related_airq];
       }
@@ -361,7 +363,7 @@ export default {
     this.calculate_co2_complete_distribution();
   },
   async updated() {
-    this.$nextTick(() => { // co2 should always be on top
+    this.$nextTick(() => {
       this.$refs.co2.mapObject.bringToFront();
     });
   },
@@ -385,10 +387,10 @@ export default {
       var list_buttons = document.querySelectorAll('.close_popups');
       var list_parents = [map_data, select_parcels]; // only those where we want the hover color to stick
 
-      map_data.addEventListener('click', function() { showPopup(map_data,map_data_popup) });
-      select_parcels.addEventListener('click', function() { showPopup(select_parcels,select_parcels_popup) });
-      parcel_distribution.addEventListener('click', function() { showPopup(parcel_distribution,parcel_distribution_popup) });
-      co2_by_parcel.addEventListener('click', function() { showPopup(co2_by_parcel,co2_by_parcel_popup) });
+      map_data.addEventListener('click', function() { showPopup(map_data,map_data_popup) }); // dos botones: show co2 data y show parcel data
+      select_parcels.addEventListener('click', function() { showPopup(select_parcels,select_parcels_popup) }); // un boton por cada cultivo, con sus colores
+      parcel_distribution.addEventListener('click', function() { showPopup(parcel_distribution,parcel_distribution_popup) }); // ver el grafico en la ventana
+      co2_by_parcel.addEventListener('click', function() { showPopup(co2_by_parcel,co2_by_parcel_popup) }); // ver el grafico en la ventana
 
       list_buttons.forEach(function(button) {
         button.addEventListener('click', closeAllPopups);
@@ -550,7 +552,7 @@ export default {
       });
       var co2_max = graph_list.map(function (element) { return Math.max(...element, 0).toFixed(3); });
       
-      // one standard deviation at each side: 68%; two std dev at each side: 95%
+      // una desviacion tipica a cada lado: 68%; 2 a cada lado: 95%
       var co2_full_data = Array.from( new Array(graph_list.length), function() { return []; } );
       for(var i = 0; i < graph_list.length; i++) {
         co2_full_data[i].push(this.$parcel_names[i]);
