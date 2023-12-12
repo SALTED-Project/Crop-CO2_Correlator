@@ -363,7 +363,7 @@ export default {
     this.calculate_co2_complete_distribution();
   },
   async updated() {
-    this.$nextTick(() => {
+    this.$nextTick(() => { // co2 should always be on top
       this.$refs.co2.mapObject.bringToFront();
     });
   },
@@ -387,10 +387,10 @@ export default {
       var list_buttons = document.querySelectorAll('.close_popups');
       var list_parents = [map_data, select_parcels]; // only those where we want the hover color to stick
 
-      map_data.addEventListener('click', function() { showPopup(map_data,map_data_popup) }); // dos botones: show co2 data y show parcel data
-      select_parcels.addEventListener('click', function() { showPopup(select_parcels,select_parcels_popup) }); // un boton por cada cultivo, con sus colores
-      parcel_distribution.addEventListener('click', function() { showPopup(parcel_distribution,parcel_distribution_popup) }); // ver el grafico en la ventana
-      co2_by_parcel.addEventListener('click', function() { showPopup(co2_by_parcel,co2_by_parcel_popup) }); // ver el grafico en la ventana
+      map_data.addEventListener('click', function() { showPopup(map_data,map_data_popup) });
+      select_parcels.addEventListener('click', function() { showPopup(select_parcels,select_parcels_popup) });
+      parcel_distribution.addEventListener('click', function() { showPopup(parcel_distribution,parcel_distribution_popup) });
+      co2_by_parcel.addEventListener('click', function() { showPopup(co2_by_parcel,co2_by_parcel_popup) });
 
       list_buttons.forEach(function(button) {
         button.addEventListener('click', closeAllPopups);
@@ -552,7 +552,7 @@ export default {
       });
       var co2_max = graph_list.map(function (element) { return Math.max(...element, 0).toFixed(3); });
       
-      // una desviacion tipica a cada lado: 68%; 2 a cada lado: 95%
+      // one standard deviation at each side: 68%; two std dev at each side: 95%
       var co2_full_data = Array.from( new Array(graph_list.length), function() { return []; } );
       for(var i = 0; i < graph_list.length; i++) {
         co2_full_data[i].push(this.$parcel_names[i]);
