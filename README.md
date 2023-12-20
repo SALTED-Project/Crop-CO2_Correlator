@@ -11,7 +11,7 @@ Currently, markets such as the spanish market allow companies to plant forests t
 #### 🎯 End User Frontend
 The user can interact with the application in several ways. Aside from a login page that the application provider may choose to activate, there is a main screen where all the controls are located. Most of it is covered by an interactive map, where the user can zoom in and out, pan, and hover over the represented polygons to read tooltips. On the left hand side, there are four buttons that allow the user to hide or display certain information (CO2, all crops, or individual crops) on the map or have a look at the interactive graphs.
 
-<img src="https://github.com/SALTED-Project/Crop-CO2_Correlator/tree/main/img/map.png" alt="Map" width="100%"/> <img src="https://github.com/SALTED-Project/Crop-CO2_Correlator/tree/main/img/graph.png" alt="Graph" width="100%"/>
+<img src="https://raw.githubusercontent.com/SALTED-Project/Crop-CO2_Correlator/main/img/map.png" alt="Map" width="49%"/> <img src="https://raw.githubusercontent.com/SALTED-Project/Crop-CO2_Correlator/main/img/graph.png" alt="Graph" width="49%"/>
 
 #### 📧 Contact
 This application was co-developed by [Amper](https://www.grupoamper.com/) and [Universidad de Cantabria](https://web.unican.es/) ([contact](https://salted-project.eu/contact/)).
